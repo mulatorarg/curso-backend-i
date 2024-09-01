@@ -1,82 +1,59 @@
-import { Router } from 'express';
-import fs from 'fs';
+const express = require('express');
+const fs = require('fs');
+const router = express.Router();
+const cartsFilePath = './data/carritos.json';
 
-const router = Router();
+// Función para leer carritos desde el archivo JSON
+function readCarts() {
+    const data = fs.readFileSync(cartsFilePath, 'utf-8');
+    return JSON.parse(data);
+}
 
-// Ruta para crear un nuevo carrito
-router.post('/carts', (req, res) => {
-    const { id, products } = req.body;
-    if (id && products) {
-        // Escribir el carrito en el archivo "carrito.json"
-        fs.readFile('carrito.json', 'utf8', (err, data) => {
-            if (err) {
-                console.error(err);
-                return res.status(500).json({ error: 'Internal Server Error' });
-            }
-            const carts = JSON.parse(data);
-            carts.push({ id, products });
-            fs.writeFile('carrito.json', JSON.stringify(carts, null, 2), err => {
-                if (err) {
-                    console.error(err);
-                    return res.status(500).json({ error: 'Internal Server Error' });
-                }
-                res.json({ id, products });
-            });
-        });
-    } else {
-        res.status(400).json({ error: 'id and products are required' });
-    }
-});
+// Función para escribir carritos al archivo JSON
+function writeCarts(carts) {
+    fs.writeFileSync(cartsFilePath, JSON.stringify(carts, null, 2));
+}
 
-// Ruta para obtener un carrito por su ID
-router.get('/carts/:cid', (req, res) => {
-    const id = req.params.cid;
-    // Leer el archivo "carrito.json"
-    fs.readFile('carrito.json', 'utf8', (err, data) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ error: 'Internal Server Error' });
-        }
-        const carts = JSON.parse(data);
-        const cart = carts.find(cart => cart.id === id);
-        if (cart) {
-            res.json(cart);
-        } else {
-            res.status(404).json({ error: 'Cart not found' });
-        }
-    });
-});
-
-// Ruta para agregar un producto a un carrito
-router.post('/:cid/product/:pid', (req, res) => {
-    const cartId = req.params.cid;
-    const productId = req.params.pid;
-    const productToAdd = {
-        product: productId,
-        quantity: 1
+// Crear un nuevo carrito
+router.post('/carts/', (req, res) => {
+    const carts = readCarts();
+    const newCart = {
+        id: String(carts.length + 1),
+        products: []
     };
-    // Leer el archivo "carrito.json"
-    fs.readFile('carrito.json', 'utf8', (err, data) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ error: 'Internal Server Error' });
-        }
-        const carts = JSON.parse(data);
-        const cartIndex = carts.findIndex(cart => cart.id === cartId);
-        if (cartIndex !== -1) {
-            carts[cartIndex].products.push(productToAdd);
-            // Escribir los cambios en el archivo "carrito.json"
-            fs.writeFile('carrito.json', JSON.stringify(carts, null, 2), err => {
-                if (err) {
-                    console.error(err);
-                    return res.status(500).json({ error: 'Internal Server Error' });
-                }
-                res.status(200).json({ message: 'Product added to cart successfully' });
-            });
-        } else {
-            res.status(404).json({ error: 'Cart not found' });
-        }
-    });
+
+    carts.push(newCart);
+    writeCarts(carts);
+    res.status(201).json(newCart);
 });
 
-export default router;
+// Listar productos de un carrito por ID
+router.get('/carts/:cid', (req, res) => {
+    const carts = readCarts();
+    const cart = carts.find(c => c.id === req.params.cid);
+    if (!cart) {
+        return res.status(404).json({ message: 'Carrito no encontrado' });
+    }
+    res.json(cart.products);
+});
+
+// Agregar un producto al carrito
+router.post('/carts/:cid/product/:pid', (req, res) => {
+    const carts = readCarts();
+    const cart = carts.find(c => c.id === req.params.cid);
+    if (!cart) {
+        return res.status(404).json({ message: 'Carrito no encontrado' });
+    }
+
+    const existingProduct = cart.products.find(p => p.product === req.params.pid);
+    if (existingProduct) {
+        existingProduct.quantity += 1;
+    } else {
+        cart.products.push({ product: req.params.pid, quantity: 1 });
+    }
+
+    writeCarts(carts);
+    res.status(201).json(cart);
+});
+
+module.exports = router;

@@ -1,8 +1,7 @@
 {
   "name": "curso-backend-i-flex",
-  "version": "1.0.0",
+  "version": "0.0.2",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "start": "node --watch src/app.js"
   },

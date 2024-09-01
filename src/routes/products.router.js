@@ -1,68 +1,72 @@
-import { Router } from 'express';
-import fs from 'fs';
+const express = require('express');
+const fs = require('fs');
+const router = express.Router();
+const productsFilePath = './data/productos.json';
 
-const router = Router();
+// Para leer productos desde el archivo JSON
+function readProducts() {
+    const data = fs.readFileSync(productsFilePath, 'utf-8');
+    return JSON.parse(data);
+}
 
-// Ruta para leer todos los productos
-router.get('/products', (req, res) => {
-    // Lee el archivo "productos.json"
-    fs.readFile('productos.json', 'utf8', (err, data) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ error: 'Internal Server Error' });
-        }
-        const products = JSON.parse(data);
-        const limit = req.query.limit;
-        if (limit) {
-            res.json(products.slice(0, limit));
-        } else {
-            res.json(products);
-        }
-    });
+// Para escribir productos al archivo JSON
+function writeProducts(products) {
+    fs.writeFileSync(productsFilePath, JSON.stringify(products, null, 2));
+}
+
+// Obtener Lista todos los productos
+router.get('/products/', (req, res) => {
+    const products = readProducts();
+    const limit = req.query.limit ? parseInt(req.query.limit) : products.length;
+    res.json(products.slice(0, limit));
 });
 
-// Ruta para leer un producto por su ID
+// Obtener producto por ID
 router.get('/products/:pid', (req, res) => {
-    const id = req.params.pid;
-    // Lee el archivo "productos.json"
-    fs.readFile('productos.json', 'utf8', (err, data) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ error: 'Internal Server Error' });
-        }
-        const products = JSON.parse(data);
-        const product = products.find(product => product.id === parseInt(id));
-        if (product) {
-            res.json(product);
-        } else {
-            res.status(404).json({ error: 'Product not found' });
-        }
-    });
+    const products = readProducts();
+    const product = products.find((p) => p.id === req.params.pid);
+    if (!product) {
+        return res.status(404).json({ message: 'Producto no encontrado' });
+    }
+    res.json(product);
 });
 
-// Ruta para agregar un nuevo producto
-router.post('/products', (req, res) => {
-    const { title, description, code, price, status, stock, category } = req.body;
-    // Lee el archivo "productos.json"
-    fs.readFile('productos.json', 'utf8', (err, data) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ error: 'Internal Server Error' });
-        }
-        const products = JSON.parse(data);
-        const id = products.length + 1;
-        const newProduct = { id, title, description, code, price, status, stock, category };
-        products.push(newProduct);
-        // Escribe los productos actualizados en el archivo "productos.json"
-        fs.writeFile('productos.json', JSON.stringify(products, null, 2), err => {
-            if (err) {
-                console.error(err);
-                return res.status(500).json({ error: 'Internal Server Error' });
-            }
-            res.json(newProduct);
-        });
-    });
+// Agregar un nuevo producto
+router.post('/products/', (req, res) => {
+    const products = readProducts();
+    const newProduct = {
+        id: String(products.length + 1),
+        ...req.body,
+        status: req.body.status !== undefined ? req.body.status : true
+    };
+
+    products.push(newProduct);
+    writeProducts(products);
+    res.status(201).json(newProduct);
 });
 
+// Actualizar un producto por ID
+router.put('/products/:pid', (req, res) => {
+    const products = readProducts();
+    const index = products.findIndex(p => p.id === req.params.pid);
+    if (index === -1) {
+        return res.status(404).json({ message: 'Producto no encontrado' });
+    }
+    const updatedProduct = { ...products[index], ...req.body, id: products[index].id };
+    products[index] = updatedProduct;
+    writeProducts(products);
+    res.json(updatedProduct);
+});
 
-export default router;
+// DELETE /:pid - Eliminar un producto por ID
+router.delete('/products/:pid', (req, res) => {
+    const products = readProducts();
+    const updatedProducts = products.filter(p => p.id !== req.params.pid);
+    if (products.length === updatedProducts.length) {
+        return res.status(404).json({ message: 'Producto no encontrado' });
+    }
+    writeProducts(updatedProducts);
+    res.status(204).send();
+});
+
+module.exports = router;

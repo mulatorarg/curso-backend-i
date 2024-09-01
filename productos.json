@@ -1,0 +1,35 @@
+[
+    {
+        "id": 1,
+        "title": "Zapatilla 1",
+        "description": "Zapatilla 1 Roja",
+        "code": "zap1r",
+        "price": 1000,
+        "status": true,
+        "stock": 10,
+        "category": "Zapatillas",
+        "thumbnails": [ "zapatilla-1"]
+    },
+    {
+        "id": 2,
+        "title": "Zapatilla 2",
+        "description": "Zapatilla 2 Roja",
+        "code": "zap2r",
+        "price": 1500,
+        "status": true,
+        "stock": 10,
+        "category": "Zapatillas",
+        "thumbnails": [ "zapatilla-2"]
+    },
+    {
+        "id": 3,
+        "title": "Zapatilla 3",
+        "description": "Zapatilla 3 Verde",
+        "code": "zap3r",
+        "price": 2900,
+        "status": true,
+        "stock": 30,
+        "category": "Zapatillas",
+        "thumbnails": [ "zapatilla-2"]
+    }
+]
