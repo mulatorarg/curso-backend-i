@@ -1,17 +1,18 @@
-const express = require('express');
-const fs = require('fs');
-const router = express.Router();
+import { Router } from 'express';
+import { readFileSync, writeFileSync } from 'fs';
+
+const router = Router();
 const cartsFilePath = './data/carritos.json';
 
 // Función para leer carritos desde el archivo JSON
 function readCarts() {
-    const data = fs.readFileSync(cartsFilePath, 'utf-8');
+    const data = readFileSync(cartsFilePath, 'utf-8');
     return JSON.parse(data);
 }
 
 // Función para escribir carritos al archivo JSON
 function writeCarts(carts) {
-    fs.writeFileSync(cartsFilePath, JSON.stringify(carts, null, 2));
+    writeFileSync(cartsFilePath, JSON.stringify(carts, null, 2));
 }
 
 // Crear un nuevo carrito
@@ -56,4 +57,4 @@ router.post('/carts/:cid/product/:pid', (req, res) => {
     res.status(201).json(cart);
 });
 
-module.exports = router;
+export default router;

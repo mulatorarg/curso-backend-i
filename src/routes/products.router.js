@@ -1,17 +1,18 @@
-const express = require('express');
-const fs = require('fs');
-const router = express.Router();
+import { Router } from 'express';
+import { readFileSync, writeFileSync } from 'fs';
+
+const router = Router();
 const productsFilePath = './data/productos.json';
 
 // Para leer productos desde el archivo JSON
 function readProducts() {
-    const data = fs.readFileSync(productsFilePath, 'utf-8');
+    const data = readFileSync(productsFilePath, 'utf-8');
     return JSON.parse(data);
 }
 
 // Para escribir productos al archivo JSON
 function writeProducts(products) {
-    fs.writeFileSync(productsFilePath, JSON.stringify(products, null, 2));
+    writeFileSync(productsFilePath, JSON.stringify(products, null, 2));
 }
 
 // Obtener Lista todos los productos
@@ -69,4 +70,4 @@ router.delete('/products/:pid', (req, res) => {
     res.status(204).send();
 });
 
-module.exports = router;
+export default router;
