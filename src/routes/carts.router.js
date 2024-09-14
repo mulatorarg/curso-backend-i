@@ -1,22 +1,10 @@
 import { Router } from 'express';
-import { readFileSync, writeFileSync } from 'fs';
+import { readCarts, writeCarts } from '../utils.js';
 
 const router = Router();
-const cartsFilePath = './data/carritos.json';
-
-// Función para leer carritos desde el archivo JSON
-function readCarts() {
-    const data = readFileSync(cartsFilePath, 'utf-8');
-    return JSON.parse(data);
-}
-
-// Función para escribir carritos al archivo JSON
-function writeCarts(carts) {
-    writeFileSync(cartsFilePath, JSON.stringify(carts, null, 2));
-}
 
 // Crear un nuevo carrito
-router.post('/carts/', (req, res) => {
+router.post('/', (req, res) => {
     const carts = readCarts();
     const newCart = {
         id: String(carts.length + 1),
@@ -29,7 +17,7 @@ router.post('/carts/', (req, res) => {
 });
 
 // Listar productos de un carrito por ID
-router.get('/carts/:cid', (req, res) => {
+router.get('/:cid', (req, res) => {
     const carts = readCarts();
     const cart = carts.find(c => c.id === req.params.cid);
     if (!cart) {
@@ -39,7 +27,7 @@ router.get('/carts/:cid', (req, res) => {
 });
 
 // Agregar un producto al carrito
-router.post('/carts/:cid/product/:pid', (req, res) => {
+router.post('/:cid/product/:pid', (req, res) => {
     const carts = readCarts();
     const cart = carts.find(c => c.id === req.params.cid);
     if (!cart) {

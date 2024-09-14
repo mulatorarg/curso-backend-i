@@ -9,7 +9,7 @@ import viewsRouter from "./routes/views.router.js";
 import { Server } from "socket.io";
 
 const app = express();
-const PORT = 8080;
+const PORT = 8000;
 
 // Server
 app.use(express.json());
@@ -22,8 +22,8 @@ app.set("view engine", "handlebars");
 app.set("views", "./src/views");
 
 // Rutas
-app.use("/api", productsRouter);
-app.use("/api", cartsRouter);
+app.use("/api/products", productsRouter);
+app.use("/api/carts", cartsRouter);
 
 // Rutas
 app.use("/", viewsRouter);
@@ -40,6 +40,6 @@ socketServer.on('connection', socket => {
   console.log('Nuevo cliente conectado.');
 
   socket.on('message', data => {
-    console.log(`Soy la data ${data}`);
+    console.log(`Mensaje Recibido: ${data}`);
   });
 });

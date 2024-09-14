@@ -1,29 +1,17 @@
 import { Router } from 'express';
-import { readFileSync, writeFileSync } from 'fs';
+import { readProducts, writeProducts } from '../utils.js';
 
 const router = Router();
-const productsFilePath = './data/productos.json';
-
-// Para leer productos desde el archivo JSON
-function readProducts() {
-    const data = readFileSync(productsFilePath, 'utf-8');
-    return JSON.parse(data);
-}
-
-// Para escribir productos al archivo JSON
-function writeProducts(products) {
-    writeFileSync(productsFilePath, JSON.stringify(products, null, 2));
-}
 
 // Obtener Lista todos los productos
-router.get('/products/', (req, res) => {
+router.get('/', (req, res) => {
     const products = readProducts();
     const limit = req.query.limit ? parseInt(req.query.limit) : products.length;
     res.json(products.slice(0, limit));
 });
 
 // Obtener producto por ID
-router.get('/products/:pid', (req, res) => {
+router.get('/:pid', (req, res) => {
     const products = readProducts();
     const product = products.find((p) => p.id === req.params.pid);
     if (!product) {
@@ -33,7 +21,7 @@ router.get('/products/:pid', (req, res) => {
 });
 
 // Agregar un nuevo producto
-router.post('/products/', (req, res) => {
+router.post('/', (req, res) => {
     const products = readProducts();
     const newProduct = {
         id: String(products.length + 1),
@@ -47,7 +35,7 @@ router.post('/products/', (req, res) => {
 });
 
 // Actualizar un producto por ID
-router.put('/products/:pid', (req, res) => {
+router.put('/:pid', (req, res) => {
     const products = readProducts();
     const index = products.findIndex(p => p.id === req.params.pid);
     if (index === -1) {
@@ -60,7 +48,7 @@ router.put('/products/:pid', (req, res) => {
 });
 
 // DELETE /:pid - Eliminar un producto por ID
-router.delete('/products/:pid', (req, res) => {
+router.delete('/:pid', (req, res) => {
     const products = readProducts();
     const updatedProducts = products.filter(p => p.id !== req.params.pid);
     if (products.length === updatedProducts.length) {
