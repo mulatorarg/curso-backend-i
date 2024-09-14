@@ -3,24 +3,24 @@ import { readProducts, writeProducts } from '../utils.js';
 
 const router = Router();
 
-// Obtener Lista todos los productos
+// Obtener Lista de todos los productos
 router.get('/', (req, res) => {
     const products = readProducts();
     const limit = req.query.limit ? parseInt(req.query.limit) : products.length;
     res.json(products.slice(0, limit));
 });
 
-// Obtener producto por ID
+// Obtener Producto según su Id
 router.get('/:pid', (req, res) => {
     const products = readProducts();
-    const product = products.find((p) => p.id === req.params.pid);
+    const product = products.find((p) => p.id == req.params.pid);
     if (!product) {
-        return res.status(404).json({ message: 'Producto no encontrado' });
+        return res.status(404).json({ message: 'Producto no encontrado' + id});
     }
     res.json(product);
 });
 
-// Agregar un nuevo producto
+// Agregar un Producto
 router.post('/', (req, res) => {
     const products = readProducts();
     const newProduct = {
@@ -34,7 +34,7 @@ router.post('/', (req, res) => {
     res.status(201).json(newProduct);
 });
 
-// Actualizar un producto por ID
+// Actualizar un Producto según su Id
 router.put('/:pid', (req, res) => {
     const products = readProducts();
     const index = products.findIndex(p => p.id === req.params.pid);
@@ -47,10 +47,10 @@ router.put('/:pid', (req, res) => {
     res.json(updatedProduct);
 });
 
-// DELETE /:pid - Eliminar un producto por ID
+// Eliminar un producto por ID
 router.delete('/:pid', (req, res) => {
     const products = readProducts();
-    const updatedProducts = products.filter(p => p.id !== req.params.pid);
+    const updatedProducts = products.filter(p => p.id != req.params.pid);
     if (products.length === updatedProducts.length) {
         return res.status(404).json({ message: 'Producto no encontrado' });
     }

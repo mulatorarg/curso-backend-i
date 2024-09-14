@@ -42,4 +42,11 @@ socketServer.on('connection', socket => {
   socket.on('message', data => {
     console.log(`Mensaje Recibido: ${data}`);
   });
+
+  socket.on('crearProducto', data => {
+    const valores = JSON.stringify(data);
+    console.log(data.nombre);
+    console.log(`datos del producto a crear: ${valores}`);
+  });
+
 });

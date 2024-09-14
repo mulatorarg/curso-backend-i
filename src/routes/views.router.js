@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
 router.get('/realtimeproducts', (req, res) => {
   const titulo = 'Gestión de Productos en RealTime 😎';
   const productos = readProducts();
-  res.render("home", {titulo, productos});
+  res.render("realtimeproducts", {titulo, productos});
 });
 
 export default router;
