@@ -10,7 +10,7 @@ export const readProducts = () => {
 }
 
 // Para escribir productos al archivo JSON
-export const writeProducts = () => {
+export const writeProducts = (products) => {
   writeFileSync(productsFilePath, JSON.stringify(products, null, 2));
 }
 
@@ -21,7 +21,7 @@ export const readCarts = () => {
 }
 
 // Función para escribir carritos al archivo JSON
-export const writeCarts = () => {
+export const writeCarts = (carts) => {
   writeFileSync(cartsFilePath, JSON.stringify(carts, null, 2));
 }
 
