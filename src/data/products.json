@@ -1,0 +1,58 @@
+[
+  {
+    "name": "Zapatilla Puma Ferrari Informal Roja",
+    "price": 42000,
+    "category": "Zapatillas Informales",
+    "stock": 10,
+    "thumbnail": "zapatilla-puma-ferrari-informal-roja.jpeg"
+  },
+  {
+    "name": "Mochila I-RUN Azule",
+    "price": "21000",
+    "category": "Mochilas",
+    "stock": "12",
+    "thumbnail": "mochila-irun-azul.jpeg"
+  },
+  {
+    "name": "Mochila I-RUN Negra",
+    "price": "22000",
+    "category": "Mochilas",
+    "stock": "4",
+    "thumbnail": "mochila-irun-negra.jpeg"
+  },
+  {
+    "name": "Zapatillas I-Run Modelo 6933",
+    "price": 23000,
+    "category": "Zapatillas Running",
+    "stock": 6,
+    "thumbnail": "zapatilla-irun-6933.jpeg"
+  },
+  {
+    "name": "Zapatillas I-Run Modelo 7004",
+    "price": 23400,
+    "category": "Zapatillas Running",
+    "stock": 6,
+    "thumbnail": "zapatilla-irun-7004.jpeg"
+  },
+  {
+    "name": "Zapatillas I-Run Modelo 7031",
+    "price": 23800,
+    "category": "Zapatillas Running",
+    "stock": 6,
+    "thumbnail": "zapatilla-irun-7031.jpeg"
+  },
+  {
+    "name": "Zapatillas I-Run Modelo 7032",
+    "price": 22650,
+    "category": "Zapatillas Running",
+    "stock": 6,
+    "thumbnail": "zapatilla-irun-7032.jpeg"
+  },
+  {
+    "name": "Zapatillas I-Run Modelo 7058",
+    "price": 24500,
+    "category": "Zapatillas Running",
+    "stock": 6,
+    "thumbnail": "zapatilla-irun-7058.jpeg"
+  }
+]

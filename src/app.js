@@ -4,13 +4,17 @@ import exphbs from "express-handlebars";
 // importar routers
 import productsRouter from "./routes/products.router.js";
 import cartsRouter from "./routes/carts.router.js";
+import apiRouter from "./routes/api.router.js";
 // importar vistas
 import viewsRouter from "./routes/views.router.js";
 import { Server } from "socket.io";
 import { readProducts, writeProducts } from "./utils.js";
+import "./config/database.js";
+import ProductModel from "./models/product.model.js";
 
 const app = express();
-const PORT = 8000;
+const PORT = 8001;
+const VERSION = '0.0.1-2024-10-09';
 
 // Server
 app.use(express.json());
@@ -25,13 +29,15 @@ app.set("views", "./src/views");
 // Rutas
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
+app.use("/api", apiRouter);
 
 // Rutas
 app.use("/", viewsRouter);
 
 // Iniciamos servidor
-const httpServer= app.listen(PORT, () => {
-    console.log(`Servidor Listo y Escuchando en el puerto ${PORT}.`);
+const httpServer = app.listen(PORT, () => {
+  console.log(`✅ Servidor Listo. Escuchando en el puerto ${PORT}.`);
+  console.log(`✅ Versión: ${VERSION}. Backend I - Comisión 70170. Campo Gabriel.`);
 });
 
 // Iniciamos servidor de sockets
@@ -62,22 +68,9 @@ socketServer.on('connection', socket => {
 
 });
 
-function idMayor(miArray) {
-  if (miArray.length === 0) return 0;
-  let objetoConIdMayor = miArray[0];
-  for (let i = 1; i < miArray.length; i++) {
-    if (miArray[i].id > objetoConIdMayor.id) {
-      objetoConIdMayor = miArray[i];
-    }
-  }
-  return objetoConIdMayor.id;
-}
-
 function agregarProducto(socket, datos) {
   const productos = readProducts();
-  const id = idMayor(productos) + 1;
   let productoAgregar = JSON.parse(datos);
-  productoAgregar.id = parseInt(id);
   productoAgregar.thumbnail = 'nuevo.jpeg';
 
   productos.push(productoAgregar);
@@ -85,34 +78,35 @@ function agregarProducto(socket, datos) {
   socket.emit('agregarProductoAgregado', productoAgregar);
 }
 
-function editarProducto(socket, datos) {
-  const productos = readProducts();
-  const productoEditar = JSON.parse(datos);
-  productoEditar.id = parseInt(productoEditar.id);
-  const indice = productos.findIndex(element => element.id == productoEditar.id);
-  if (indice != -1) {
-    productos[indice].nombre = productoEditar.nombre;
-    productos[indice].categoria = productoEditar.categoria;
-    productos[indice].precio = productoEditar.precio;
-    productos[indice].stock = productoEditar.stock;
-    productos[indice].thumbnail = productoEditar.thumbnail;
+async function editarProducto(socket, productUpdated) {
+  try {
+    console.log('productUpdated', productUpdated);
+    const id = productUpdated._id;
+    delete productUpdated._id;
+    const product = await ProductModel.findByIdAndUpdate(id, productUpdated, {returnDocument: 'after'});
 
-    writeProducts(productos);
+    console.log('producto actualizado', product);
+
+    if (!product) return null;
+
+    await product.save();
+    console.log("Editar. Producto actualizado correctamente.");
     socket.emit('editarProductoEditado', productoEditar);
-    } else {
-    console.log('Editar. Producto no existe.');
+  } catch (error) {
+    console.log('Editar Producto. Error: ' + error.message);
+    return null;
   }
 }
 
-function borrarProducto(socket, id) {
-  const productos = readProducts();
-  id = parseInt(id);
-  const indice = productos.findIndex(element => element.id == id);
-  if (indice) {
-    productos.splice(indice, 1);
-    writeProducts(productos);
+async function borrarProducto(socket, id) {
+  try {
+    const product = await ProductModel.findByIdAndDelete(id);
+
+    if (!product) return null;
+
+    console.log('Eliminar. Producto no existe.');
     socket.emit('borrarProductoBorrado', id);
-  } else {
+  } catch (error) {
     console.log('Eliminar. Producto no existe.');
   }
 }
