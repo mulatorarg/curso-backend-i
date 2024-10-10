@@ -17,4 +17,11 @@ router.get('/realtimeproducts', async (req, res) => {
   res.render("realtimeproducts", {titulo, productos});
 });
 
+// Mostrar vista de datos del producto seleccionado
+router.get("/product/:pid", async (req, res) => {
+  const pid = req.params.pid;
+  const producto = await ProductModel.findById(pid).lean();
+  res.render("product", {producto});
+});
+
 export default router;

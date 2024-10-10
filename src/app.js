@@ -8,13 +8,12 @@ import apiRouter from "./routes/api.router.js";
 // importar vistas
 import viewsRouter from "./routes/views.router.js";
 import { Server } from "socket.io";
-import { readProducts, writeProducts } from "./utils.js";
 import "./config/database.js";
 import ProductModel from "./models/product.model.js";
 
 const app = express();
 const PORT = 8001;
-const VERSION = '0.0.1-2024-10-09';
+const VERSION = '0.0.1-2024-10-10';
 
 // Server
 app.use(express.json());
@@ -69,7 +68,6 @@ socketServer.on('connection', socket => {
 async function agregarProducto(socket, datos) {
   const { code, name, price, stock, category } = datos;
   const producto = await ProductModel.create({ code, name, price, stock, category });
-  //console.log(producto);
 
   if (!producto) socket.emit('mostrarMsj', { tipo: 'error', mensaje: 'No existe el producto que se intenta modificar.' });
 
@@ -78,7 +76,6 @@ async function agregarProducto(socket, datos) {
 
 async function editarProducto(socket, data) {
   try {
-    //console.log('data', data);
     const id = data._id;
     delete data._id;
     const producto = await ProductModel.findByIdAndUpdate(id, data, { returnDocument: 'after' });
@@ -86,7 +83,6 @@ async function editarProducto(socket, data) {
     if (!producto) socket.emit('mostrarMsj', { tipo: 'error', mensaje: 'No existe el producto que se intenta modificar.' });
 
     await producto.save();
-    //console.log(producto);
     socket.emit('editarProductoEditado', producto);
   } catch (error) {
     socket.emit('mostrarMsj', { tipo: 'error', mensaje: 'Error al modificar el producto: ' + error.message });

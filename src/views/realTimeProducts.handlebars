@@ -81,8 +81,8 @@
         <p id="product_{{ _id }}_name" class="card-text">{{ name }}</p>
         <div class="d-flex justify-content-between align-items-center">
           <div class="btn-group">
-            <button type="button" onclick="editarProducto('{{ _id }}', '{{ name }}', '{{ category }}', '{{ price }}', '{{ stock }}', '{{ thumbnail }}')" class="btn btn-sm btn-success">Editar</button>
-            <button type="button" onclick="borrarProducto('{{ _id }}')" class="btn btn-sm btn-danger">Eliminar</button>
+            <button type="button" onclick="editProduct('{{ _id }}', '{{ name }}', '{{ category }}', '{{ price }}', '{{ stock }}', '{{ thumbnail }}')" class="btn btn-sm btn-success">Editar</button>
+            <button type="button" onclick="deleteProduct('{{ _id }}')" class="btn btn-sm btn-danger">Eliminar</button>
           </div>
           <small id="product_{{ _id }}_price" class="text-body-secondary">$ {{ price }}</small>
         </div>

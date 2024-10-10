@@ -1,20 +1,20 @@
 const socket = io();
 
-const formAgregarProducto = document.getElementById('formAgregarProducto');
-const formEditarProducto = document.getElementById('formEditarProducto');
-const btnAgregarProducto = document.getElementById('btnAgregarProducto');
-const btnEditarProducto = document.getElementById('btnEditarProducto');
-const btnBorrarProducto = document.getElementById('btnBorrarProducto');
+const formAddProduct = document.getElementById('formAddProduct');
+const formEditProduc = document.getElementById('formEditProduc');
+const btnAddProduct = document.getElementById('btnAddProduct');
+const btnEditProduc = document.getElementById('btnEditProduc');
+const btnDeleteProdcut = document.getElementById('btnDeleteProdcut');
 
 const lstProductos = document.getElementById('lstProductos');
 
 function editarProducto(id, name, category, price, stock, thumbnail) {
-  formEditarProducto.product_id.value = id;
-  formEditarProducto.product_name.value = name;
-  formEditarProducto.product_category.value = category;
-  formEditarProducto.product_price.value = price;
-  formEditarProducto.product_stock.value = stock;
-  formEditarProducto.product_thumbnail.value = thumbnail;
+  formEditProduc.product_id.value = id;
+  formEditProduc.product_name.value = name;
+  formEditProduc.product_category.value = category;
+  formEditProduc.product_price.value = price;
+  formEditProduc.product_stock.value = stock;
+  formEditProduc.product_thumbnail.value = thumbnail;
 }
 
 function borrarProducto(id) {
@@ -41,39 +41,39 @@ function mostrarMsj(tipo = 'success', texto = 'Genial!') {
   });
 }
 
-btnAgregarProducto.addEventListener('click', (e) => {
+btnAddProduct.addEventListener('click', (e) => {
 
-  if (formAgregarProducto.product_name.value.length == 0) return;
-  if (formAgregarProducto.product_category.value.length == 0) return;
-  if (formAgregarProducto.product_price.value.length == 0) return;
-  if (formAgregarProducto.product_stock.value.length == 0) return;
+  if (formAddProduct.product_name.value.length == 0) return;
+  if (formAddProduct.product_category.value.length == 0) return;
+  if (formAddProduct.product_price.value.length == 0) return;
+  if (formAddProduct.product_stock.value.length == 0) return;
 
   const datos = {
-    name: formAgregarProducto.product_name.value,
-    category: formAgregarProducto.product_category.value,
-    price: formAgregarProducto.product_price.value,
-    stock: formAgregarProducto.product_stock.value,
+    name: formAddProduct.product_name.value,
+    category: formAddProduct.product_category.value,
+    price: formAddProduct.product_price.value,
+    stock: formAddProduct.product_stock.value,
   };
 
   socket.emit('agregarProducto', datos);
 });
 
-btnEditarProducto.addEventListener('click', (e) => {
+btnEditProduc.addEventListener('click', (e) => {
 
-  if (formEditarProducto.product_id.value.length == 0) return;
-  if (formEditarProducto.product_name.value.length == 0) return;
-  if (formEditarProducto.product_category.value.length == 0) return;
-  if (formEditarProducto.product_price.value.length == 0) return;
-  if (formEditarProducto.product_stock.value.length == 0) return;
-  if (formEditarProducto.product_thumbnail.value.length == 0) return;
+  if (formEditProduc.product_id.value.length == 0) return;
+  if (formEditProduc.product_name.value.length == 0) return;
+  if (formEditProduc.product_category.value.length == 0) return;
+  if (formEditProduc.product_price.value.length == 0) return;
+  if (formEditProduc.product_stock.value.length == 0) return;
+  if (formEditProduc.product_thumbnail.value.length == 0) return;
 
   const datos = {
-    _id: formEditarProducto.product_id.value,
-    name: formEditarProducto.product_name.value,
-    category: formEditarProducto.product_category.value,
-    price: formEditarProducto.product_price.value,
-    stock: formEditarProducto.product_stock.value,
-    thumbnail: formEditarProducto.product_thumbnail.value,
+    _id: formEditProduc.product_id.value,
+    name: formEditProduc.product_name.value,
+    category: formEditProduc.product_category.value,
+    price: formEditProduc.product_price.value,
+    stock: formEditProduc.product_stock.value,
+    thumbnail: formEditProduc.product_thumbnail.value,
   };
 
   socket.emit('editarProducto', datos);

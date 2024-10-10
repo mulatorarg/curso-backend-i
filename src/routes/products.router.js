@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import { readProducts, writeProducts } from '../utils.js';
 import ProductModel from '../models/product.model.js';
 
 const router = Router();
@@ -92,7 +91,6 @@ router.put('/:pid', async(req, res) => {
   try {
 
     const product = await ProductModel.findByIdAndUpdate(id, productUpdated, {returnDocument: 'after'});
-    console.log(product);
 
     if (!product) {
       return res.status(404).json({ status: 'error', message: 'Producto no encontrado.' });
@@ -107,14 +105,22 @@ router.put('/:pid', async(req, res) => {
 });
 
 // Eliminar un producto por ID
-router.delete('/:pid', (req, res) => {
-  const products = readProducts();
-  const updatedProducts = products.filter(p => p.id != req.params.pid);
-  if (products.length === updatedProducts.length) {
-    return res.status(404).json({ message: 'Producto no encontrado' });
+router.delete('/:pid', async(req, res) => {
+  try {
+
+    const product = await ProductModel.findByIdAndUpdate(id, productUpdated, {returnDocument: 'after'});
+    console.log(product);
+
+    if (!product) {
+      return res.status(404).json({ status: 'error', message: 'Producto no encontrado.' });
+    }
+
+    //console.log("Product actualizado correctamente.");
+    return await product.save();
+  } catch (error) {
+    console.log("Error al actualizar el producto: ", error);
+    return null;
   }
-  writeProducts(updatedProducts);
-  res.status(204).send();
 });
 
 export default router;
