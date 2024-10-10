@@ -89,8 +89,8 @@ socket.on('agregarProductoAgregado', (producto) => {
         <p id="product_${producto._id}_name" class="card-text">${producto.name}}</p>
         <div class="d-flex justify-content-between align-items-center">
           <div class="btn-group">
-            <button type="button" onclick="editarProducto(${producto._id}, '${producto.name}', '${producto.category}', '${producto.price}', '${producto.stock}', '${producto.thumbnail}')" class="btn btn-sm btn-success">Editar</button>
-            <button type="button" onclick="borrarProducto(${producto._id})" class="btn btn-sm btn-danger">Eliminar</button>
+            <button type="button" onclick="editarProducto('${producto._id}', '${producto.name}', '${producto.category}', '${producto.price}', '${producto.stock}', '${producto.thumbnail}')" class="btn btn-sm btn-success">Editar</button>
+            <button type="button" onclick="borrarProducto('${producto._id}')" class="btn btn-sm btn-danger">Eliminar</button>
           </div>
           <small id="product_${producto._id}_price" class="text-body-secondary">$ ${producto.price}</small>
         </div>

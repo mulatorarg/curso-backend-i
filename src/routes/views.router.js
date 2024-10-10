@@ -1,5 +1,4 @@
 import { Router } from 'express';
-//import { readProducts } from '../utils.js';
 import ProductModel from "../models/product.model.js";
 
 const router = Router();
@@ -7,7 +6,6 @@ const router = Router();
 // Listar productos de un carrito por ID
 router.get('/', async (req, res) => {
   const titulo = 'Nuestros Productos';
-  //const productos = readProducts();
   const productos = await ProductModel.find({ }).lean();
   res.render("home", {titulo, productos});
 });
@@ -15,7 +13,6 @@ router.get('/', async (req, res) => {
 // Listar productos de un carrito por ID
 router.get('/realtimeproducts', async (req, res) => {
   const titulo = 'Gestión de Productos en RealTime 😎';
-  //const productos = readProducts();
   const productos = await ProductModel.find({ }).lean();
   res.render("realtimeproducts", {titulo, productos});
 });

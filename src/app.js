@@ -51,62 +51,54 @@ socketServer.on('connection', socket => {
   });
 
   socket.on('agregarProducto', data => {
-    const datos = JSON.stringify(data);
-    agregarProducto(socket, datos);
+    //console.log('agregarProducto', data);
+    agregarProducto(socket, data);
   });
 
   socket.on('editarProducto', data => {
-    const datos = JSON.stringify(data);
-    editarProducto(socket, datos);
+    //console.log('editarProducto', data);
+    editarProducto(socket, data);
   });
 
   socket.on('borrarProducto', data => {
-    const id = parseInt(data);
-    console.log('Borrar', id);
-    borrarProducto(socket, id);
+    //console.log('Borrar', data);
+    borrarProducto(socket, data);
   });
-
 });
 
-function agregarProducto(socket, datos) {
-  const productos = readProducts();
-  let productoAgregar = JSON.parse(datos);
-  productoAgregar.thumbnail = 'nuevo.jpeg';
+async function agregarProducto(socket, datos) {
+  const { code, name, price, stock, category } = datos;
+  const producto = await ProductModel.create({ code, name, price, stock, category });
+  //console.log(producto);
 
-  productos.push(productoAgregar);
-  writeProducts(productos);
-  socket.emit('agregarProductoAgregado', productoAgregar);
+  if (!producto) socket.emit('mostrarMsj', { tipo: 'error', mensaje: 'No existe el producto que se intenta modificar.' });
+
+  socket.emit('agregarProductoAgregado', producto);
 }
 
-async function editarProducto(socket, productUpdated) {
+async function editarProducto(socket, data) {
   try {
-    console.log('productUpdated', productUpdated);
-    const id = productUpdated._id;
-    delete productUpdated._id;
-    const product = await ProductModel.findByIdAndUpdate(id, productUpdated, {returnDocument: 'after'});
+    //console.log('data', data);
+    const id = data._id;
+    delete data._id;
+    const producto = await ProductModel.findByIdAndUpdate(id, data, { returnDocument: 'after' });
 
-    console.log('producto actualizado', product);
+    if (!producto) socket.emit('mostrarMsj', { tipo: 'error', mensaje: 'No existe el producto que se intenta modificar.' });
 
-    if (!product) return null;
-
-    await product.save();
-    console.log("Editar. Producto actualizado correctamente.");
-    socket.emit('editarProductoEditado', productoEditar);
+    await producto.save();
+    //console.log(producto);
+    socket.emit('editarProductoEditado', producto);
   } catch (error) {
-    console.log('Editar Producto. Error: ' + error.message);
-    return null;
+    socket.emit('mostrarMsj', { tipo: 'error', mensaje: 'Error al modificar el producto: ' + error.message });
   }
 }
 
 async function borrarProducto(socket, id) {
   try {
     const product = await ProductModel.findByIdAndDelete(id);
-
-    if (!product) return null;
-
-    console.log('Eliminar. Producto no existe.');
+    if (!product) socket.emit('mostrarMsj', { tipo: 'error', mensaje: 'No existe el producto que se intenta eliminar.' });
     socket.emit('borrarProductoBorrado', id);
   } catch (error) {
-    console.log('Eliminar. Producto no existe.');
+    socket.emit('mostrarMsj', { tipo: 'error', mensaje: 'Error al eliminar el producto: ' + error.message });
   }
 }
