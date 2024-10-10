@@ -13,7 +13,7 @@ import ProductModel from "./models/product.model.js";
 
 const app = express();
 const PORT = 8001;
-const VERSION = '0.0.1-2024-10-10';
+const VERSION = '0.1.10-2024-10-10';
 
 // Server
 app.use(express.json());
