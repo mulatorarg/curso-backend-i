@@ -1,6 +1,6 @@
 {
   "name": "curso-backend-i-flex",
-  "version": "0.0.3",
+  "version": "0.1.10",
   "main": "index.js",
   "type": "module",
   "scripts": {
@@ -14,7 +14,7 @@
   "dependencies": {
     "express": "^4.21.1",
     "express-handlebars": "^8.0.1",
-    "mongoose": "^8.7.0",
+    "mongoose": "^8.7.1",
     "mongoose-paginate-v2": "^1.8.5",
     "socket.io": "^4.8.0"
   },

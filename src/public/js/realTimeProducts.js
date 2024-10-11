@@ -1,23 +1,24 @@
 const socket = io();
 
 const formAddProduct = document.getElementById('formAddProduct');
-const formEditProduc = document.getElementById('formEditProduc');
+const formEditProduct = document.getElementById('formEditProduct');
 const btnAddProduct = document.getElementById('btnAddProduct');
-const btnEditProduc = document.getElementById('btnEditProduc');
-const btnDeleteProdcut = document.getElementById('btnDeleteProdcut');
+const btnEditProduct = document.getElementById('btnEditProduct');
+const btnDeleteProduct = document.getElementById('btnDeleteProduct');
 
 const lstProductos = document.getElementById('lstProductos');
 
-function editarProducto(id, name, category, price, stock, thumbnail) {
-  formEditProduc.product_id.value = id;
-  formEditProduc.product_name.value = name;
-  formEditProduc.product_category.value = category;
-  formEditProduc.product_price.value = price;
-  formEditProduc.product_stock.value = stock;
-  formEditProduc.product_thumbnail.value = thumbnail;
+function editProduct(id, name, category, price, stock, thumbnail) {
+  formEditProduct.product_id.value = id;
+  formEditProduct.product_name.value = name;
+  formEditProduct.product_category.value = category;
+  formEditProduct.product_price.value = price;
+  formEditProduct.product_stock.value = stock;
+  formEditProduct.product_thumbnail.value = thumbnail;
+  formEditProduct.product_name.focus();
 }
 
-function borrarProducto(id) {
+function deleteProduct(id) {
   Swal.fire({
     title: "¿Estás seguro de eliminar el producto?",
     showCancelButton: true,
@@ -58,28 +59,28 @@ btnAddProduct.addEventListener('click', (e) => {
   socket.emit('agregarProducto', datos);
 });
 
-btnEditProduc.addEventListener('click', (e) => {
+btnEditProduct.addEventListener('click', (e) => {
 
-  if (formEditProduc.product_id.value.length == 0) return;
-  if (formEditProduc.product_name.value.length == 0) return;
-  if (formEditProduc.product_category.value.length == 0) return;
-  if (formEditProduc.product_price.value.length == 0) return;
-  if (formEditProduc.product_stock.value.length == 0) return;
-  if (formEditProduc.product_thumbnail.value.length == 0) return;
+  if (formEditProduct.product_id.value.length == 0) return;
+  if (formEditProduct.product_name.value.length == 0) return;
+  if (formEditProduct.product_category.value.length == 0) return;
+  if (formEditProduct.product_price.value.length == 0) return;
+  if (formEditProduct.product_stock.value.length == 0) return;
+  if (formEditProduct.product_thumbnail.value.length == 0) return;
 
   const datos = {
-    _id: formEditProduc.product_id.value,
-    name: formEditProduc.product_name.value,
-    category: formEditProduc.product_category.value,
-    price: formEditProduc.product_price.value,
-    stock: formEditProduc.product_stock.value,
-    thumbnail: formEditProduc.product_thumbnail.value,
+    _id: formEditProduct.product_id.value,
+    name: formEditProduct.product_name.value,
+    category: formEditProduct.product_category.value,
+    price: formEditProduct.product_price.value,
+    stock: formEditProduct.product_stock.value,
+    thumbnail: formEditProduct.product_thumbnail.value,
   };
 
   socket.emit('editarProducto', datos);
 });
 
-socket.on('agregarProductoAgregado', (producto) => {
+socket.on('agregarProductoSuccess', (producto) => {
   mostrarMsj('success', `Se ha agregado un nuevo producto: ${producto.name}.`);
 
   const nuevoProductoCol = `<div id="product_${producto._id}" class="col">
@@ -100,7 +101,7 @@ socket.on('agregarProductoAgregado', (producto) => {
   lstProductos.innerHTML += nuevoProductoCol;
 });
 
-socket.on('editarProductoEditado', (producto) => {
+socket.on('editarProductoSuccess', (producto) => {
   mostrarMsj('success', `Se ha editado el producto: ${producto.name}.`);
   const elementoName = document.getElementById(`product_${producto._id}_name`);
   if (elementoName) elementoName.innerHTML = producto.name;
@@ -115,7 +116,7 @@ socket.on('editarProductoEditado', (producto) => {
   if (elementoStock) elementoStock.innerHTML = `$ {producto.stock}`;
 });
 
-socket.on('borrarProductoBorrado', (producto) => {
+socket.on('borrarProductoSuccess', (producto) => {
   mostrarMsj('success', `Se ha eliminado un producto.`);
   const elemento = document.getElementById('product_' + producto);
   if (elemento) {

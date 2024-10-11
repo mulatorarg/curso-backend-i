@@ -6,7 +6,9 @@
 
   <div class="col-md-8 col-sm-12">
     <h3>{{ producto.name }}</h3>
-    <p>A solo $ {{ producto.price }}.</p>
+    <br>
+    <p><b>Precio:</b> $ {{ producto.price }}.</p>
+    <p><b>Stock:</b> {{ producto.stock }}.</p>
     <p><a onclick="addToCart('{{ producto._id }}')" class="btn btn-sm btn-success">Agregar al Carrito</a></p>
   </div>
 

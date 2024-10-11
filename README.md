@@ -72,5 +72,5 @@ Un repo público para compartir experiencia del curso.
 
 ## Última modificación
 
-10/10/2024.
+11/10/2024.
 Campo Gabriel.
