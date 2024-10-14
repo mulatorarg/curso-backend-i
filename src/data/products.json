@@ -8,16 +8,16 @@
   },
   {
     "name": "Mochila I-RUN Azule",
-    "price": "21000",
+    "price": 21000,
     "category": "Mochilas",
-    "stock": "12",
+    "stock": 12,
     "thumbnail": "mochila-irun-azul.jpeg"
   },
   {
     "name": "Mochila I-RUN Negra",
-    "price": "22000",
+    "price": 22000,
     "category": "Mochilas",
-    "stock": "4",
+    "stock": 4,
     "thumbnail": "mochila-irun-negra.jpeg"
   },
   {

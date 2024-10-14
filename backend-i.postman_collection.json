@@ -15,7 +15,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8001/api/products",
+							"raw": "http://localhost:8001/api/products?limit=2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -24,6 +24,32 @@
 							"path": [
 								"api",
 								"products"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "2"
+								},
+								{
+									"key": "page",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "asc",
+									"disabled": true
+								},
+								{
+									"key": "query",
+									"value": "Zapatillas Running",
+									"disabled": true
+								},
+								{
+									"key": "query",
+									"value": "Mochilas",
+									"disabled": true
+								}
 							]
 						}
 					},
@@ -35,7 +61,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8001/api/products/6706b778da821666010b6f0c",
+							"raw": "http://localhost:8001/api/products/670d81c8115364c4ec4376f4",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -44,7 +70,7 @@
 							"path": [
 								"api",
 								"products",
-								"6706b778da821666010b6f0c"
+								"670d81c8115364c4ec4376f4"
 							]
 						}
 					},
@@ -169,7 +195,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8001/api/carts/670852392e3fa425c0e00545/product/6706b778da821666010b6f0f",
+							"raw": "http://localhost:8001/api/carts/670d8316a807816813282cda/product/670d81c8115364c4ec4376f4",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -178,9 +204,9 @@
 							"path": [
 								"api",
 								"carts",
-								"670852392e3fa425c0e00545",
+								"670d8316a807816813282cda",
 								"product",
-								"6706b778da821666010b6f0f"
+								"670d81c8115364c4ec4376f4"
 							]
 						}
 					},
