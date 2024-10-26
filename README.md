@@ -2,31 +2,38 @@
 
 Un repo público para compartir experiencia del curso.
 
+
 ## Entrega Final de tu Proyecto
 
 * Deberás entregar el proyecto que has venido armando, cambiando persistencia en base de datos, además de agregar algunos endpoints nuevos a tu API.
 
+
 ### Profesionalizando la BD
+
 
 #### Objetivos generales
 
 * Contarás con Mongo como sistema de persistencia principal.
 * Tendrás definidos todos los endpoints para poder trabajar con productos y carritos.
 
+
 #### Objetivos específicos
 
 * Profesionalizar las consultas de productos con filtros, paginación y ordenamientos.
 * Profesionalizar la gestión de carrito para implementar los últimos conceptos vistos.
 
+
 #### Formato
 
 * Link al repositorio de Github, sin la carpeta de node_modules.
+
 
 #### Sugerencias
 
 * Permitir comentarios en el archivo.
 * La lógica del negocio que ya tienes hecha no debería cambiar, sólo su persistencia.
 * Los nuevos endpoints deben seguir la misma estructura y lógica que hemos seguido.
+
 
 #### Se debe entregar
 
@@ -72,5 +79,5 @@ Un repo público para compartir experiencia del curso.
 
 ## Última modificación
 
-11/10/2024.
+15/10/2024.
 Campo Gabriel.
